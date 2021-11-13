@@ -1,4 +1,5 @@
 import 'package:farmer_app/Providers/model_hud.dart';
+import 'package:farmer_app/Screens/Auth/login_screen.dart';
 import 'package:farmer_app/Services/auth.dart';
 import 'package:farmer_app/Widgets/customtextfield.dart';
 import 'package:flutter/material.dart';
@@ -137,10 +138,12 @@ class _OwnerRegisterScreenState extends State<OwnerRegisterScreen> {
                           context: context,
                           name: name!,
                           city:selectedcity,
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text("Your Request In Review You can Login after accepted")));
-                        instance.changeisLoading(false);
+                        ).then((value) {
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                              content: Text("Your Request In Review You can Login after accepted")));
+                          Navigator.pushNamedAndRemoveUntil(context, LoginScreen.id, (route) => false);
+                          instance.changeisLoading(false);
+                        });
                       }
                       catch (e) {
                         instance.changeisLoading(false);

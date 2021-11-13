@@ -1,5 +1,6 @@
 
 import 'package:farmer_app/Providers/model_hud.dart';
+import 'package:farmer_app/Screens/User/user_home_screen.dart';
 import 'package:farmer_app/Services/auth.dart';
 import 'package:farmer_app/Widgets/customtextfield.dart';
 import 'package:flutter/material.dart';
@@ -118,9 +119,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 password: password!,
                                 city : selectedcity,
                                 context: context,
-                            );
-                            //Navigator.pushNamedAndRemoveUntil(context, UserHomeScreen.id, (route) => false);
-                            instance.changeisLoading(false);
+                            ).then((value) {
+                               Navigator.pushNamedAndRemoveUntil(context, UserHomeScreen.id, (route) => false);
+                               instance.changeisLoading(false);
+                             });
                           }
                           catch (e) {
                             instance.changeisLoading(false);

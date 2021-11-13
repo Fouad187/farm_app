@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmer_app/Models/egg_model.dart';
-import 'package:farmer_app/Providers/user_data.dart';
+import 'package:farmer_app/Models/farm_product.dart';
+import 'package:farmer_app/Providers/farm_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../constant.dart';
 
 class MyEggsWidget extends StatelessWidget {
-  Egg egg;
+  FarmProduct egg;
   int index;
   MyEggsWidget({required this.egg , required this.index});
   @override
@@ -51,7 +51,7 @@ class MyEggsWidget extends StatelessWidget {
                     try {
                       await FirebaseFirestore.instance.collection(
                           'Eggs').doc(egg.docId).delete();
-                      Provider.of<UserData>(context,listen: false).removeFromEggs(index);
+                      Provider.of<FarmData>(context,listen: false).removeFromEggs(index);
                     }
                     catch (e)
                     {

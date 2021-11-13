@@ -1,4 +1,4 @@
-class Egg
+class FarmProduct
 {
   late String id;
   late String name;
@@ -9,10 +9,11 @@ class Egg
   late String color;
   late String price;
   String? docId;
+  double? totalPrice;
+  int? quantity;
+  FarmProduct({required this.name,required this.price,required this.color,required this.description,required  this.image , required this.id , required this.farmName,required this.status});
 
-  Egg({required this.name,required this.price,required this.color,required this.description,required  this.image , required this.id , required this.farmName,required this.status});
-
-  Egg.fromJson(Map<dynamic,dynamic> map)
+  FarmProduct.fromJson(Map<dynamic,dynamic> map)
   {
     if(map==null)
       {

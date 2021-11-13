@@ -1,4 +1,4 @@
-import 'package:farmer_app/Providers/user_data.dart';
+import 'package:farmer_app/Providers/farm_data.dart';
 import 'package:farmer_app/Widgets/all_farms_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,7 @@ class _AdminMyFarmsTapState extends State<AdminMyFarmsTap> {
   }
   getFarms()
   {
-    Provider.of<UserData>(context,listen: false).getAllFarms();
+    Provider.of<FarmData>(context,listen: false).getAllFarms();
   }
   @override
   Widget build(BuildContext context) {
@@ -25,10 +25,10 @@ class _AdminMyFarmsTapState extends State<AdminMyFarmsTap> {
       itemBuilder: (context, index) {
         return AllFarmsCard(
           index: index,
-          farm: Provider.of<UserData>(context).allFarms[index],
+          farm: Provider.of<FarmData>(context).allFarms[index],
         );
       },
-      itemCount: Provider.of<UserData>(context).allFarms.length,
+      itemCount: Provider.of<FarmData>(context).allFarms.length,
     );
   }
 }

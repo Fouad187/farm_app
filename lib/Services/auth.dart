@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmer_app/Models/farm_model.dart';
 import 'package:farmer_app/Models/user_model.dart';
 import 'package:farmer_app/Providers/model_hud.dart';
+import 'package:farmer_app/Providers/farm_data.dart';
 import 'package:farmer_app/Providers/user_data.dart';
 import 'package:farmer_app/Screens/Admin/admin_home_screen.dart';
+import 'package:farmer_app/Screens/Auth/login_screen.dart';
 import 'package:farmer_app/Screens/User/user_home_screen.dart';
 import 'package:farmer_app/Screens/farmOwner/owner_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,10 +36,10 @@ class Auth
            city: (value2)['city'],
          );
          final instance = Provider.of<Modelhud>(context, listen: false);
-         Provider.of<UserData>(context , listen: false).setUser(userModel);
 
          if(type=='User')
            {
+             Provider.of<UserData>(context , listen: false).setUser(userModel);
              Navigator.pushNamed(context, UserHomeScreen.id);
              instance.changeisLoading(false);
            }
@@ -49,6 +51,7 @@ class Auth
                    _auth.signOut();
                    Fluttertoast.showToast(msg: 'Your Request In Review You can Login after accepted' , toastLength: Toast.LENGTH_LONG);
                    instance.changeisLoading(false);
+
                  }
                else {
                  Farm farm = Farm(
@@ -60,8 +63,9 @@ class Auth
                    status: (farma)['status'],
                    city: (farma)['city'],
                  );
-                 Provider.of<UserData>(context, listen: false).setFarm(
+                 Provider.of<FarmData>(context, listen: false).setFarm(
                      farm);
+                 Provider.of<FarmData>(context, listen: false).setUser(userModel);
                  Navigator.pushNamed(context, OwnerHomeScreen.id);
                  instance.changeisLoading(false);
                }
@@ -69,6 +73,7 @@ class Auth
            }
          else
            {
+             Provider.of<UserData>(context, listen: false).setUser(userModel);
              Navigator.pushNamed(context, AdminHomeScreen.id);
              instance.changeisLoading(false);
            }
@@ -76,18 +81,18 @@ class Auth
        });
      });
  }
-  void CreateAccount({required String name, required String email ,required String password, required String type ,required String city,context}) async {
+  Future<void> CreateAccount({required String name, required String email ,required String password, required String type ,required String city,context}) async {
 
       await _auth.createUserWithEmailAndPassword(email: email, password: password).then((user) async {
-        UserModel usermodel=UserModel(
+        UserModel userModel=UserModel(
           id: user.user!.uid,
           name: name,
           email: email,
           type: type,
           city: city,
         );
-        await Adduserdata(usermodel);
-        Provider.of<UserData>(context , listen: false).setUser(usermodel);
+        await Adduserdata(userModel);
+        Provider.of<UserData>(context , listen: false).setUser(userModel);
       });
 
   }
@@ -98,7 +103,7 @@ class Auth
 
 
 
-  void createFarm({required String name,required String email ,required String password, required String type, required String address,required String rating,required String city , context}) async
+  Future<void> createFarm({required String name,required String email ,required String password, required String type, required String address,required String rating,required String city , context}) async
   {
 
     await _auth.createUserWithEmailAndPassword(email: email, password: password).then((user) async {
@@ -120,8 +125,9 @@ class Auth
         city: city,
       );
       await _farmCollection.doc(usermodel.id).set(farm.toJson());
-      Provider.of<UserData>(context , listen: false).setUser(usermodel);
-      Provider.of<UserData>(context , listen: false).setFarm(farm);
+      print(farm.farmName);
+      //Provider.of<UserData>(context , listen: false).setUser(usermodel);
+      Provider.of<FarmData>(context, listen: false).setFarm(farm);
     });
 
   }

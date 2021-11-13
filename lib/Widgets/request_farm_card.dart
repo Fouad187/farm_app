@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmer_app/Models/farm_model.dart';
-import 'package:farmer_app/Providers/user_data.dart';
+import 'package:farmer_app/Providers/farm_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -59,7 +59,7 @@ class RequestFarmCard extends StatelessWidget {
                       await FirebaseFirestore.instance.collection(
                           'Farm').doc(farm.id).update(
                           {'status': 'Accepted'});
-                      Provider.of<UserData>(context,listen:false).removeFromRequest(index);
+                      Provider.of<FarmData>(context,listen:false).removeFromRequest(index);
                     },
                     child: const Text('Accept'),
                     color: Colors.green,
@@ -70,7 +70,7 @@ class RequestFarmCard extends StatelessWidget {
                       await FirebaseFirestore.instance.collection(
                           'Farm').doc(farm.id).update(
                           {'status': 'Refused'});
-                      Provider.of<UserData>(context,listen:false).removeFromRequest(index);
+                      Provider.of<FarmData>(context,listen:false).removeFromRequest(index);
 
                     },
                     child: const Text('Refused'),

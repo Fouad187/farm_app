@@ -1,11 +1,20 @@
 
+import 'package:farmer_app/Providers/cart.dart';
+import 'package:farmer_app/Providers/user_data.dart';
+import 'package:farmer_app/Screens/User/cart_screen.dart';
+import 'package:farmer_app/Screens/User/orders_screen.dart';
+import 'package:farmer_app/Screens/User/payment_screen.dart';
+import 'package:farmer_app/Screens/User/user_all_farm.dart';
+import 'package:farmer_app/Screens/User/user_chickens.dart';
+import 'package:farmer_app/Screens/User/user_eggs.dart';
+import 'package:farmer_app/Screens/User/user_little_chicken.dart';
 import 'package:farmer_app/Screens/farmOwner/all_order_screen.dart';
 import 'package:farmer_app/Screens/farmOwner/my_chickens_screen.dart';
 import 'package:farmer_app/Screens/farmOwner/my_egg_screen.dart';
 import 'package:farmer_app/Screens/farmOwner/my_little_chicken_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'Providers/model_hud.dart';
-import 'Providers/user_data.dart';
+import 'Providers/farm_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Screens/Admin/admin_home_screen.dart';
@@ -29,7 +38,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<Modelhud>(create: (context) => Modelhud(),),
+        ChangeNotifierProvider<FarmData>(create: (context) => FarmData(),),
         ChangeNotifierProvider<UserData>(create: (context) => UserData(),),
+        ChangeNotifierProvider<Cart>(create: (context) => Cart(),),
 
       ],
       child: MaterialApp(
@@ -51,7 +62,13 @@ class MyApp extends StatelessWidget {
 
           UserHomeScreen.id:(context)=>UserHomeScreen(),
 
-
+          CartScreen.id:(context)=>CartScreen(),
+          PaymentScreen.id:(context)=>PaymentScreen(),
+          UserAllEggsScreen.id:(context)=>UserAllEggsScreen(),
+          UserAllChickensScreen.id:(context)=>UserAllChickensScreen(),
+          UserAllLittleChickensScreen.id:(context)=>UserAllLittleChickensScreen(),
+          UserOrderScreen.id:(context)=>UserOrderScreen(),
+          UserAllFarmsScreen.id:(context)=>UserAllFarmsScreen(),
           /*
 
           //User

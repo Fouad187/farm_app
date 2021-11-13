@@ -1,6 +1,6 @@
 import 'package:farmer_app/Models/farm_model.dart';
 import 'package:farmer_app/Models/user_model.dart';
-import 'package:farmer_app/Providers/user_data.dart';
+import 'package:farmer_app/Providers/farm_data.dart';
 import 'package:farmer_app/Screens/Auth/login_screen.dart';
 import 'package:farmer_app/Screens/farmOwner/all_order_screen.dart';
 import 'package:farmer_app/Screens/farmOwner/my_chickens_screen.dart';
@@ -36,8 +36,8 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    UserModel? user=Provider.of<UserData>(context).user;
-    Farm? farm=Provider.of<UserData>(context).farm;
+    UserModel? user=Provider.of<FarmData>(context).user;
+    Farm? farm=Provider.of<FarmData>(context).farm;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Kcolor,
@@ -74,7 +74,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                 title: const Text('My Eggs', style: TextStyle(color: Colors.black),),
                 leading: Icon(FontAwesomeIcons.egg, color: Kcolor),
                 onTap: (){
-                  Provider.of<UserData>(context,listen: false).getMyEggs(farmId: user.id).then((value) {
+                  Provider.of<FarmData>(context,listen: false).getMyEggs(farmId: user.id).then((value) {
                     Navigator.pushNamed(context, MyEggScreen.id);
                   });
                 },
@@ -83,7 +83,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                 title: const Text('My Chickens', style: TextStyle(color: Colors.black),),
                 leading: Icon(FontAwesomeIcons.egg, color: Kcolor),
                 onTap: (){
-                  Provider.of<UserData>(context,listen: false).getMyChickens(farmId: user.id).then((value) {
+                  Provider.of<FarmData>(context,listen: false).getMyChickens(farmId: user.id).then((value) {
                     Navigator.pushNamed(context, MyChickensScreen.id);
                   });
                 },
@@ -92,18 +92,19 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                 title: const Text('My Little Chickens', style: TextStyle(color: Colors.black),),
                 leading: Icon(Icons.child_care, color: Kcolor),
                 onTap: (){
-                  Provider.of<UserData>(context,listen: false).getMyLittleChickens(farmId: user.id).then((value) {
+                  Provider.of<FarmData>(context,listen: false).getMyLittleChickens(farmId: user.id).then((value) {
                     Navigator.pushNamed(context, MyLittleChickenScreen.id);
                   });
                 },
               ),
-              ListTile(
+            /*  ListTile(
                 title: const Text('All Orders', style: TextStyle(color: Colors.black),),
                 leading: Icon(Icons.reorder, color: Kcolor),
                 onTap: (){
                   Navigator.pushNamed(context,AllOrderScreen.id);
                 },
               ),
+             */
               ListTile(
                 title: const Text('Log out', style: TextStyle(color: Colors.black),),
                 leading: Icon(Icons.logout, color: Kcolor),

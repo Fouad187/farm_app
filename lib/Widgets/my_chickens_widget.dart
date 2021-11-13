@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmer_app/Models/chicken_model.dart';
-import 'package:farmer_app/Providers/user_data.dart';
+import 'package:farmer_app/Models/farm_product.dart';
+import 'package:farmer_app/Providers/farm_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +8,7 @@ import '../constant.dart';
 
 
 class MyChickensWidget extends StatelessWidget {
-  Chicken chicken;
+  FarmProduct chicken;
   int index;
   bool isChicken;
   MyChickensWidget({required this.chicken , required this.index , required this.isChicken});
@@ -55,13 +55,13 @@ class MyChickensWidget extends StatelessWidget {
                       {
                         await FirebaseFirestore.instance.collection(
                             'Chickens').doc(chicken.docId).delete();
-                        Provider.of<UserData>(context,listen: false).removeFromChickens(index);
+                        Provider.of<FarmData>(context,listen: false).removeFromChickens(index);
                       }
                       else
                       {
                         await FirebaseFirestore.instance.collection(
                             'Little').doc(chicken.docId).delete();
-                        Provider.of<UserData>(context, listen: false)
+                        Provider.of<FarmData>(context, listen: false)
                             .removeFromLittle(index);
                       }
                     }

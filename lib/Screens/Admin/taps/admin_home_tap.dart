@@ -1,4 +1,4 @@
-import 'package:farmer_app/Providers/user_data.dart';
+import 'package:farmer_app/Providers/farm_data.dart';
 import 'package:farmer_app/Widgets/request_farm_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class _AdminHomeTapState extends State<AdminHomeTap> {
   }
   getFarms()
   {
-    Provider.of<UserData>(context,listen: false).getRequestFarm();
+    Provider.of<FarmData>(context,listen: false).getRequestFarm();
   }
   @override
   Widget build(BuildContext context) {
@@ -33,9 +33,9 @@ class _AdminHomeTapState extends State<AdminHomeTap> {
             Expanded(
               child: ListView.builder(
                 itemBuilder: (context, index) {
-                  return RequestFarmCard(farm:Provider.of<UserData>(context,listen: true).requestedFarm[index],index: index,);
+                  return RequestFarmCard(farm:Provider.of<FarmData>(context,listen: true).requestedFarm[index],index: index,);
                 },
-                itemCount: Provider.of<UserData>(context,listen: true).requestedFarm.length,
+                itemCount: Provider.of<FarmData>(context,listen: true).requestedFarm.length,
               ),
             ),
           ],

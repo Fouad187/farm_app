@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmer_app/Models/chicken_model.dart';
-import 'package:farmer_app/Models/egg_model.dart';
+import 'package:farmer_app/Models/farm_product.dart';
+import 'package:farmer_app/Models/order_in_farm_model.dart';
 import 'package:farmer_app/Models/user_model.dart';
-import 'package:farmer_app/Providers/user_data.dart';
+import 'package:farmer_app/Providers/farm_data.dart';
 import 'package:farmer_app/constant.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:provider/provider.dart';
@@ -13,14 +13,14 @@ class OwnerServices
 
   void addNewEgg({required String name, required String description ,required String price, required File image ,required String color, context}) async
   {
-    UserModel? user=Provider.of<UserData>(context , listen: false).user;
+    UserModel? user=Provider.of<FarmData>(context , listen: false).user;
 
     final ref=FirebaseStorage.instance.ref().child('Egg_photo').child('${getRandomId()}.jpg');
     await ref.putFile(image);
     final url=await ref.getDownloadURL();
 
 
-    Egg egg=Egg(
+    FarmProduct egg=FarmProduct(
       id: user!.id,
       farmName: user.name,
       name: name,
@@ -37,14 +37,14 @@ class OwnerServices
   }
   void addNewChicken({required String name, required String price,required String description ,required String color, required File image , context}) async
   {
-    UserModel? user=Provider.of<UserData>(context , listen: false).user;
+    UserModel? user=Provider.of<FarmData>(context , listen: false).user;
 
     final ref=FirebaseStorage.instance.ref().child('Chicken_photo').child('${getRandomId()}.jpg');
     await ref.putFile(image);
     final url=await ref.getDownloadURL();
 
 
-    Chicken chicken=Chicken(
+    FarmProduct chicken=FarmProduct(
       id: user!.id,
       farmName: user.name,
       name: name,
@@ -61,14 +61,14 @@ class OwnerServices
   }
   void addNewLittle({required String name, required String price,required String description ,required String color,required File image , context}) async
   {
-    UserModel? user=Provider.of<UserData>(context , listen: false).user;
+    UserModel? user=Provider.of<FarmData>(context , listen: false).user;
 
     final ref=FirebaseStorage.instance.ref().child('Little_photo').child('${getRandomId()}.jpg');
     await ref.putFile(image);
     final url=await ref.getDownloadURL();
 
 
-    Chicken chicken=Chicken(
+    FarmProduct chicken=FarmProduct(
       id: user!.id,
       farmName: user.name,
       name: name,
@@ -84,14 +84,14 @@ class OwnerServices
 
   }
 
-  Future<List<Egg>> getMyEggs({required String farmId}) async
+  Future<List<FarmProduct>> getMyEggs({required String farmId}) async
   {
-    List<Egg> eggs=[];
+    List<FarmProduct> eggs=[];
     await FirebaseFirestore.instance.collection('Eggs').where('id' , isEqualTo: farmId).get().then((value) {
       for(int i = 0; i < value.docs.length; i++)
       {
 
-        eggs.add(Egg.fromJson(value.docs[i].data()));
+        eggs.add(FarmProduct.fromJson(value.docs[i].data()));
         eggs[i].docId=value.docs[i].id;
       }
 
@@ -100,13 +100,13 @@ class OwnerServices
 
     return eggs;
   }
-  Future<List<Chicken>> getMyChickens({required String farmId}) async
+  Future<List<FarmProduct>> getMyChickens({required String farmId}) async
   {
-    List<Chicken> chickens=[];
+    List<FarmProduct> chickens=[];
     await FirebaseFirestore.instance.collection('Chickens').where('id' , isEqualTo: farmId).get().then((value) {
       for(int i = 0; i < value.docs.length; i++)
       {
-        chickens.add(Chicken.fromJson(value.docs[i].data()));
+        chickens.add(FarmProduct.fromJson(value.docs[i].data()));
         chickens[i].docId=value.docs[i].id;
 
       }
@@ -116,13 +116,13 @@ class OwnerServices
 
     return chickens;
   }
-  Future<List<Chicken>> getMyLittleChickens({required String farmId}) async
+  Future<List<FarmProduct>> getMyLittleChickens({required String farmId}) async
   {
-    List<Chicken> littleChickens=[];
+    List<FarmProduct> littleChickens=[];
     await FirebaseFirestore.instance.collection('Little').where('id' , isEqualTo: farmId).get().then((value) {
       for(int i = 0; i < value.docs.length; i++)
       {
-        littleChickens.add(Chicken.fromJson(value.docs[i].data()));
+        littleChickens.add(FarmProduct.fromJson(value.docs[i].data()));
         littleChickens[i].docId=value.docs[i].id;
 
       }
@@ -131,5 +131,18 @@ class OwnerServices
 
 
     return littleChickens;
+  }
+
+  Future<List<OrderInFarm>> getMyOrders({required String farmId}) async {
+    List<OrderInFarm> orders=[];
+    await FirebaseFirestore.instance.collection('Farm').doc(farmId).collection(farmId).where('status' , isEqualTo: 'In Review').get().then((value) {
+      for(int i = 0; i < value.docs.length; i++)
+      {
+        orders.add(OrderInFarm.fromJson(value.docs[i].data()));
+        orders[i].docId=value.docs[i].id;
+      }
+    });
+
+    return orders;
   }
 }

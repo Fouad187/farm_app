@@ -1,4 +1,4 @@
-import 'package:farmer_app/Providers/user_data.dart';
+import 'package:farmer_app/Providers/farm_data.dart';
 import 'package:farmer_app/Widgets/my_chickens_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,9 +16,9 @@ class MyLittleChickenScreen extends StatelessWidget {
       ),
       body:  ListView.builder(
         itemBuilder: (context, index) {
-          return MyChickensWidget(chicken : Provider.of<UserData>(context).myLittleChickens[index] , index: index,isChicken: false,);
+          return MyChickensWidget(chicken : Provider.of<FarmData>(context).myLittleChickens[index] , index: index,isChicken: false,);
         },
-        itemCount: Provider.of<UserData>(context).myLittleChickens.length,
+        itemCount: Provider.of<FarmData>(context).myLittleChickens.length,
       ),
     );
 
